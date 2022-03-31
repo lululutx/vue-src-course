@@ -1,0 +1,56 @@
+<!--
+ * @Author: LuLu
+ * @Date: 2022-03-31 21:54:12
+ * @LastEditors: LuLu
+ * @LastEditTime: 2022-03-31 22:04:55
+ * @FilePath: \vue-src-course\day01\demos\06-check-createGetValueByPath.html
+ * @Description: 
+ * https://github.com/lululutx
+ * Copyright (c) 2022 by LuLu, All Rights Reserved. 
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * @description: 这个函数在我们Vue编译模板的时候就生成了
+       * @param {*} path
+       * @return {*}
+       */
+      function createGetValueByPath(path) {
+        let paths = path.split("."); //[xxx,yyy,zzz]
+
+        return function getValueByPath(obj) {
+          let res = obj;
+          let prop;
+          while ((prop = paths.shift())) {
+            res = res[prop];
+          }
+          return res;
+        };
+      }
+
+      let getValueByPath = createGetValueByPath("b.c.d.e");
+
+      let a = {
+        b: {
+          c: {
+            d: {
+              e: {
+                name: "肠子哥",
+              },
+            },
+          },
+        },
+      };
+      let res = getValueByPath(a);
+      console.info(res);
+    </script>
+  </body>
+</html>

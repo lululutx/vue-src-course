@@ -1,3 +1,13 @@
+<!--
+ * @Author: LuLu
+ * @Date: 2022-03-29 21:09:28
+ * @LastEditors: LuLu
+ * @LastEditTime: 2022-03-31 22:13:00
+ * @FilePath: \vue-src-course\README.md
+ * @Description: 
+ * https://github.com/lululutx
+ * Copyright (c) 2022 by LuLu, All Rights Reserved. 
+-->
 
 
 
@@ -27,3 +37,17 @@ Vue的执行流程
     3.替换页面中有"坑"的位置
 
 Vue利用我们提供的数据 和页面中的模板 生成了一个新的Html标签 (node元素),替换掉页面中放置模板的位置.
+
+# 简单的模板实现
+
+
+
+
+
+# 虚拟DOM
+
+目标:
+    1.怎么将真正的DOM转化为虚拟DOM
+    2.这么把虚拟DOM转化为真正的DOM
+
+思路与深拷贝类似

@@ -1,0 +1,58 @@
+<!--
+ * @Author: LuLu
+ * @Date: 2022-03-31 21:46:30
+ * @LastEditors: LuLu
+ * @LastEditTime: 2022-03-31 21:52:04
+ * @FilePath: \vue-src-course\day01\demos\05-check-getValueByPath.html
+ * @Description: 
+ * https://github.com/lululutx
+ * Copyright (c) 2022 by LuLu, All Rights Reserved. 
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * @description:
+       * @param {*} obj
+       * @param {*} path
+       * @return {*}
+       */
+      function getValueByPath(obj, path) {
+        let paths = path.split("."); //[xxx,yyy,zzz]
+        //先取得obj的xxx再取得结果中的yyy再取得结果中的zzz
+
+        // let res = null;
+        // res = obj[paths[0]];
+        // res = res[paths[1]];
+
+        let res = obj;
+        let prop;
+        while ((prop = paths.shift())) {
+          res = res[prop];
+        }
+        return res;
+      }
+
+      let a = {
+        b: {
+          c: {
+            d: {
+              e: {
+                name: "肠子哥",
+              },
+            },
+          },
+        },
+      };
+      let res = getValueByPath(a, "b.c.d.e.name");
+      console.info(res);
+    </script>
+  </body>
+</html>

@@ -1,9 +1,9 @@
 <!--
  * @Author: LuLu
- * @Date: 2022-03-30 19:54:21
+ * @Date: 2022-03-31 22:06:18
  * @LastEditors: LuLu
- * @LastEditTime: 2022-03-31 21:31:32
- * @FilePath: \vue-src-course\day01\demos\03-Vue-ctr.html
+ * @LastEditTime: 2022-03-31 22:09:10
+ * @FilePath: \vue-src-course\day01\demos\07-deepProps.html
  * @Description: 
  * https://github.com/lululutx
  * Copyright (c) 2022 by LuLu, All Rights Reserved. 
@@ -21,14 +21,33 @@
     <!-- 写模板 -->
 
     <div id="root">
-      <div>
-        <p>{{name}}--{{message}}</p>
-      </div>
-      <p>{{name}}</p>
-      <p>{{message}}</p>
+      <p>{{name.firstName}}</p>
     </div>
 
     <script>
+      //要解决一个问题：
+      // 使用"xxx.yyy.zzz"能访问某个对象
+      /**
+       * @description: 用字符串的路径来访问对象的成员
+       * @param {*} obj 对象
+       * @param {*} path 路径
+       * @return {*}
+       */
+      function getValueByPath(obj, path) {
+        let paths = path.split("."); //[xxx,yyy,zzz]
+        //先取得obj的xxx再取得结果中的yyy再取得结果中的zzz
+
+        // let res = null;
+        // res = obj[paths[0]];
+        // res = res[paths[1]];
+
+        let res = obj;
+        let prop;
+        while ((prop = paths.shift())) {
+          res = res[prop];
+        }
+        return res
+      }
       let rMustache = /\{\{(.+?)\}\}/g;
 
       function compiler(template, data) {
@@ -44,8 +63,9 @@
               //使用正则匹配一次,函数就调用一次
               //函数的第0个参数,表示匹配到的内容
               //函数的第n个参数,表示正则中的第n组
-              let key = g.trim(); //这个就是写在双花括号里的东西
-              let value = data[key];
+              // debugger
+              let path = g.trim(); //这个就是写在双花括号里的东西
+              let value = getValueByPath(data, path);
 
               //将{{xxxx}}用这个值替换
               return value;
@@ -91,8 +111,10 @@
       let app = new JGVue({
         el: "#root",
         data: {
-          name: "肠子哥",
-          message: "极品臭脚",
+          name: {
+            firstName: "肠",
+            lastName: "子哥",
+          },
         },
       });
     </script>
