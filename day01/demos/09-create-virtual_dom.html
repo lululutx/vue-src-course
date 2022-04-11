@@ -1,0 +1,145 @@
+<!--
+ * @Author: LuLu
+ * @Date: 2022-03-31 22:14:40
+ * @LastEditors: LuLu
+ * @LastEditTime: 2022-04-11 22:47:13
+ * @Description: 
+ * https://github.com/lululutx
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root">
+      <div class="c1">
+        <div title="tt1" id="id">hello1</div>
+        <div title="tt2">hello2</div>
+        <div title="tt2">hello3</div>
+        <ul>
+          <li>1</li>
+          <li>2</li>
+          <li>3</li>
+        </ul>
+      </div>
+    </div>
+    <script>
+      //为什么要使用虚拟DOM  因为要提升性能
+      /**
+       * @description:   <div /> => { tag:'div'}
+       *                 文本节点 => { tag:undefined,value:'文本节点'}
+       *                 <div title="1" class="c" /> => {tag:'div',data:{title:"1",class:'1'}}
+       *                 <div><div /></div> => {tag:'div',children:[{tag:'div'}]}
+       * @param {*}
+       * @return {*}
+       */
+
+      class VNode {
+        /**
+         * @description:
+         * @param {*} tag 标签
+         * @param {*} data 数据
+         * @param {*} value 值
+         * @param {*} type 1元素,3文本节点
+         * @param {*} elm 先不管
+         * @return {*}
+         */
+        constructor(tag, data, value, type, elm) {
+          this.tag = tag && tag.toLowerCase(); //转为小写
+          this.data = data;
+          this.value = value;
+          this.type = type;
+          this.children = [];
+        }
+        //追加的方法
+        appendChild(vnode) {
+          this.children.push(vnode);
+        }
+      }
+      /**
+       * @description: 考虑怎么去生成,使用递归来便利DOM元素,生成虚拟DOM.Vue源码使用的是 栈存储 父元素实现递归生成
+       * @param {*} node 真正的node
+       * @return {*}
+       */
+      function getVNode(node) {
+        let nodeType = node.nodeType;
+        let _vnode = null;
+        if (nodeType === 1) {
+          //元素
+          let nodeName = node.nodeName;
+          let attrs = node.attributes; //属性
+          let _attrsObj = {};
+          for (let i = 0; i < attrs.length; i++) {
+            //attrs[i]属性节点 nodeType == 2
+            _attrsObj[attrs[i].nodeName] = attrs[i].nodeValue;
+          }
+
+          _vnode = new VNode(nodeName, _attrsObj, undefined, nodeType);
+
+          //考虑 node 的子元素
+          let childNodes = node.childNodes;
+          for (let i = 0; i < childNodes.length; i++) {
+            _vnode.appendChild(getVNode(childNodes[i])); //递归
+          }
+        } else if (nodeType === 3) {
+          _vnode = new VNode(undefined, undefined, node.nodeValue, nodeType);
+        }
+        return _vnode;
+      }
+
+      let root = document.querySelector("#root");
+      let vnode = getVNode(root);
+
+      console.info("-------", vnode);
+
+      /**
+       * @description: 将vNode 转换为真正的DOM
+       * @param {*} vnode 虚拟DOM
+       * @return {*}
+       */
+      function parseVNode(vnode) {
+        // document.createElement
+        // document.createTextNode
+        //创建真实的DOM
+        let type = vnode.type;
+        let _node = null;
+        if (type === 3) {
+          //文本节点
+          return document.createTextNode(vnode.value);
+        } else if (type === 1) {
+          // 元素节点
+
+          _node = document.createElement(vnode.tag);
+          //属性
+          let data = vnode.data; //现在data是键值对
+          //Object.keys()会将原型链中的可枚举属性便利出来
+          Object.keys(data).forEach((key) => {
+            let attrName = key;
+            let attrValue = data[key];
+            _node.setAttribute(attrName, attrValue);
+          });
+          //元素
+
+          let children = vnode.children;
+          children.forEach((subvnode) => {
+            _node.appendChild(parseVNode(subvnode)); //递归转换子元素 //appendChild方法是DOM的方法 而不是上面写的VNode的appendChild方法
+          });
+
+          return _node;
+        }
+      }
+
+      //在Vue中 使用递归 + 栈 数据类型
+
+      let dom2 = parseVNode(vnode);
+
+      //要验证,对比转换后和转换前的DOM
+      console.info("==========", dom2);
+    </script>
+  </body>
+</html>

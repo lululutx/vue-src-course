@@ -1,0 +1,33 @@
+<!--
+ * @Author: LuLu
+ * @Date: 2022-04-11 23:34:19
+ * @LastEditors: LuLu
+ * @LastEditTime: 2022-04-11 23:44:01
+ * @Description: 
+ * FindMe:https://github.com/lululutx
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let tags = "div,p,a,img,ul,li".split(",");
+
+      function makeMap(keys) {
+        let set = {}; //集合 键值对
+        tags.forEach((key) => (set[key] = true));
+        return function (tagName) {
+          //!取反，!!强制转换Boolean值
+          return !!set[tagName.toLowerCase()];
+        };
+      }
+      let isHTMLTag = makeMap(tags);
+      //假设有10个标签需要判断 ,那么现在还有没有循环存在???
+    </script>
+  </body>
+</html>
