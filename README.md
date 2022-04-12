@@ -2,7 +2,7 @@
  * @Author: LuLu
  * @Date: 2022-03-29 21:09:28
  * @LastEditors: LuLu
- * @LastEditTime: 2022-04-11 23:58:41
+ * @LastEditTime: 2022-04-12 22:41:18
  * @FilePath: \vue-src-course\README.md
  * @Description:
  * https://github.com/lululutx
@@ -136,4 +136,12 @@ render的作用是将虚拟DOM转换为真正的DOM 加到页面中
 - 一个项目运行的时候 模板是不会变的 这就表示 AST是不会变的
 
 我们可以将代码进行优化,将虚拟DOM缓存起来,生成一个函数,函数只需要传入数据,就可以得到真正的DOM
+
+# 响应式原理
+
+# 讨论
+
+- 这样闭包会内存泄露吗
+  - 性能一定会是有问题的
+  - 尽可能的提高性能 
 
