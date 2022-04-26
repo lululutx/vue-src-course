@@ -1,0 +1,57 @@
+<!--
+ * @Author: LuLu
+ * @Date: 2022-04-13 20:56:50
+ * @LastEditors: LuLu
+ * @LastEditTime: 2022-04-13 21:04:43
+ * @Description: 
+ * FindMe:https://github.com/lululutx
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var o = {
+        name: "肠子哥",
+        age: "21",
+        gender: "男",
+      };
+
+      /**
+       * @description: 这个函数这个闭包来缓存数据 简化后的版本
+       * @param {*} target
+       * @param {*} key
+       * @param {*} value
+       * @param {*} enumerable 可枚举的
+       * @return {*}
+       */
+      function defineReactive(target, key, value, enumerable) {
+        //函数内部就是一个局部作用域,这个value就只是在函数内部使用的变量(闭包 )
+        Object.defineProperty(target, key, {
+          configurable: true,
+          enumerable: !!enumerable,
+          get() {
+            console.info(`读取o的${key}属性:${value}`); //额外的操作
+            return value;
+          },
+          set(newVal) {
+            console.info(`设置o的${key}属性:${newVal}`); //额外的操作
+            value = newVal;
+          },
+        });
+      }
+
+      //将对象转换为响应式的
+
+      let keys = Object.keys(o);
+      for (let i = 0; i < keys.length; i++) {
+        defineReactive(o, keys[i], o[keys[i]], true);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,52 @@
+<!--
+ * @Author: LuLu
+ * @Date: 2022-04-13 20:39:58
+ * @LastEditors: LuLu
+ * @LastEditTime: 2022-04-13 21:00:58
+ * @Description: 
+ * FindMe:https://github.com/lululutx
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var o = {};
+      //要给o提供属性
+      o.name = "肠子哥";
+      //等价于
+      Object.defineProperty(o, "age", {
+        configurable: true, //可配置的
+        writable: true, //可赋值的
+        enumerable: true, //可枚举  //不可枚举以后,照样可以赋值读取 但是不能for-in便利了
+        value: 21,
+      });
+
+      //get 和 set 上
+      //要响应式,就是在赋值和读取的时候,附带的要做一些事情
+
+      let _gender
+      Object.defineProperty(o, "gender", {
+        configurable: true, //可配置的
+        // writable: true, //可赋值的  (value/writable)和(get/set)二选一
+        enumerable: true, //可枚举  //不可枚举以后,照样可以赋值读取 但是不能for-in便利了
+        get() {
+          //如果使用o.gender 来访问数据,就会调用get方法 (getter 读取器)
+          return _gender;
+        },
+        set(newVal) {
+          //如果o.gender = 'xxx' 就会调用这个方法,并且设置的值,会作为参数set
+          _gender = newVal
+        },
+        //如果同事使用get和set ,需要一个中间变量,来存储中间的数据
+        //问题 这个_gender被暴露在全局作用域???咋办呢
+        //在Vue中,使用了一个巧妙的技巧,defineReactive(target,key,value,enumerable) 这个函数这个闭包来缓存数据
+      });
+    </script>
+  </body>
+</html>
