@@ -2,7 +2,7 @@
  * @Author: LuLu
  * @Date: 2022-03-29 21:09:28
  * @LastEditors: LuLu
- * @LastEditTime: 2022-04-26 21:11:26
+ * @LastEditTime: 2022-04-26 22:37:08
  * @FilePath: \vue-src-course\README.md
  * @Description:
  * https://github.com/lululutx
@@ -153,7 +153,7 @@ render 的作用是将虚拟 DOM 转换为真正的 DOM 加到页面中
 ```js
 Object.defineProperty(对象, "设置什么属性名", {
   writeable,
-  configable,
+  configurable,
   enumerable, //用来控制属性是否可枚举,是不是可以被for-in循环取出来
   set() {}, //赋值触发
   get() {}, //取值触发
@@ -195,6 +195,7 @@ let o ={
   user:{}
 }
 ```
+
 怎么处理呢???递归
 
 对于对象可以使用递归来响应式化,但是数组我们也需要处理
@@ -210,14 +211,23 @@ let o ={
 要做什么事情呢?
 
 1. 在改变数组的数据的时候,要发出通知
-  - Vue2 中的缺陷,数组发生变化,设置length没法通知(Vue3中使用Proxy 语法 ES6 解决了 这个问题)
+
+- Vue2 中的缺陷,数组发生变化,设置 length 没法通知(Vue3 中使用 Proxy 语法 ES6 解决了 这个问题)
+
 2. 加入的元素应该变成响应式的
 
 技巧: 如果一个函数已经定义了,但是我们需要拓展其功能,我们的一般处理办法:
+
 1. 使用一个临时的函数名储存函数
 2. 重新定义原来的函数
 3. 定义拓展的功能
 4. 调用临时的那个函数
 
+扩展数组的方法 push 和 pop 怎么处理呢???
+
+- 直接修改 prototype **不行**
+- 修改要进行响应式化的数组原型 ( **proto** )
+
+目前已经将对象改成响应式的了,但是如果直接给对象赋值,赋值另一个对象,那么就不是响应式得了
 
 # 发布订阅模式

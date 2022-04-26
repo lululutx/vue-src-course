@@ -1,0 +1,57 @@
+<!--
+ * @Author: LuLu
+ * @Date: 2022-04-26 21:39:21
+ * @LastEditors: LuLu
+ * @LastEditTime: 2022-04-26 22:03:23
+ * @Description: 
+ * FindMe:https://github.com/lululutx
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let ARRAY_METHOD = [
+        "push",
+        "pop",
+        "shift",
+        "unshift",
+        "reverse",
+        "sort",
+        "splice",
+      ];
+
+      //思路是原型式继承:修改原型链的结构
+      let arr = [];
+      //继承关系: arr->Array.prototype->Object.prototype->...
+      //继承关系: arr->改写的方法->Array.prototype->Object.prototype->...
+      let array_methods = Object.create(Array.prototype);
+
+      ARRAY_METHOD.forEach((method) => {
+        array_methods[method] = function () {
+          //调用原来的方法
+          console.info("调用的是拦截的", method, "方法");
+
+          //将数据进行响应式化
+
+
+          //使用apply改变this是因为函数谁调用this指向谁
+          let res = Array.prototype[method].apply(this, arguments);
+          //   Array.prototype[method].call(this, ...arguments);// 类比
+          return res;
+        };
+      });
+
+      arr.__proto__ = array_methods;
+
+      //Vue的源码中,做了判断
+      //如果浏览器自称 __proto__ 那么就这么做
+      //如果不支持,Vue使用的混入法,(不挂载到原型上,挂载到当前对象上)
+    </script>
+  </body>
+</html>

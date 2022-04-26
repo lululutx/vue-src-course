@@ -1,0 +1,46 @@
+<!--
+ * @Author: LuLu
+ * @Date: 2022-04-26 21:17:28
+ * @LastEditors: LuLu
+ * @LastEditTime: 2022-04-26 21:33:26
+ * @Description: 
+ * FindMe:https://github.com/lululutx
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //这就是在函数原有的基础上增加额外的操作:函数的拦截(面向切面编程)
+
+      //   技巧: 如果一个函数已经定义了,但是我们需要拓展其功能,我们的一般处理办法:
+      //   1. 使用一个临时的函数名储存函数
+      //   2. 重新定义原来的函数
+      //   3. 定义拓展的功能
+      //   4. 调用临时的那个函数
+
+      function func() {
+        console.info("原始的功能");
+      }
+
+      //1
+      let _temFn = func;
+      //2
+      func = function () {
+        //4
+        _temFn();
+
+        //3
+        console.info("新的拓展功能");
+      };
+
+      func(); //1.打印出 '原始的功能'
+      //2.打印出 '新的拓展功能'
+    </script>
+  </body>
+</html>
