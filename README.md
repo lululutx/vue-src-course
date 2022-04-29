@@ -2,7 +2,7 @@
  * @Author: LuLu
  * @Date: 2022-03-29 21:09:28
  * @LastEditors: LuLu
- * @LastEditTime: 2022-04-26 22:37:08
+ * @LastEditTime: 2022-04-29 21:32:32
  * @FilePath: \vue-src-course\README.md
  * @Description:
  * https://github.com/lululutx
@@ -231,3 +231,26 @@ let o ={
 目前已经将对象改成响应式的了,但是如果直接给对象赋值,赋值另一个对象,那么就不是响应式得了
 
 # 发布订阅模式
+
+任务：
+
+- 作业
+- 代理方法(app.name,app.\_data.name)
+- 事件模型(node:event 模块)
+- vue 中发布订阅模式 Observer Watcher Dep
+
+代理方法就是将 app.\_data 中的成员映射到 app 上
+由于需要在更新数据的时候,更新页面的内容
+所以 app.\_data 访问的成员与 app 访问的成员应该是同一个成员
+
+由于 app.\_data 已经是响应式的对象了,只需要 app 访问的成员去访问 app.\_data 的对应的成员就行了
+例如
+
+```js
+app.name 转换为 app._data.name
+app.xxx 转换为 app._data.xxx
+```
+
+vue 中引入了一个函数 proxy(target,src,prop),target 相当于 app,src 相当于 app.\_data,prop 相当于 name
+将 target 的操作映射到 src.prop 上
+这里是因为当时没有`Proxy`语法(ES6)
