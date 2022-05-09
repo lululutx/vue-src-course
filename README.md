@@ -2,7 +2,7 @@
  * @Author: LuLu
  * @Date: 2022-03-29 21:09:28
  * @LastEditors: LuLu
- * @LastEditTime: 2022-04-29 21:32:32
+ * @LastEditTime: 2022-05-09 21:33:09
  * @FilePath: \vue-src-course\README.md
  * @Description:
  * https://github.com/lululutx
@@ -208,7 +208,7 @@ let o ={
 - sort
 - splice
 
-要做什么事情呢?
+要做什么事情呢? 
 
 1. 在改变数组的数据的时候,要发出通知
 
@@ -254,3 +254,7 @@ app.xxx 转换为 app._data.xxx
 vue 中引入了一个函数 proxy(target,src,prop),target 相当于 app,src 相当于 app.\_data,prop 相当于 name
 将 target 的操作映射到 src.prop 上
 这里是因为当时没有`Proxy`语法(ES6)
+
+我们之前处理reactify方法已经不行了,我们需要新的方法来处理
+我们提供一个Observer的方法(观察者),在这个方法中对属性进行处理
+我们也可以将这个方法封装到initData当中

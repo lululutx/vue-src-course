@@ -1,11 +1,12 @@
 <!--
  * @Author: LuLu
- * @Date: 2022-04-29 20:57:33
+ * @Date: 2022-05-09 20:53:22
  * @LastEditors: LuLu
- * @LastEditTime: 2022-05-09 20:45:44
+ * @LastEditTime: 2022-05-09 21:38:31
  * @Description: 
  * FindMe:https://github.com/lululutx
 -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -178,7 +179,7 @@
         this._template = elm;
         this._parent = elm.parentNode;
 
-        reactify(this._data, this); //将Vue实例传入,折中的处理
+        this.initData(); //将data进行响应式的转化,进行代理
 
         this.mount(); //挂载
       }
@@ -292,7 +293,11 @@
           set(newVal) {
             console.info(`设置o的${key}属性:${newVal}`); //额外的操作
 
-            value = newVal;
+            if (typeof newVal === "object" && newVal != null) {
+              value = reactify(newVal);
+            } else {
+              value = newVal;
+            }
 
             //模板刷新(这现在是假的 演示一下真正的要用diff算法)
             //Vue实例??  watcher就不会有这个问题
@@ -310,7 +315,7 @@
         let keys = Object.keys(o);
 
         for (let i = 0; i < keys.length; i++) {
-          let key = keys[i]; //属性名  
+          let key = keys[i]; //属性名
           let value = o[key];
 
           //判断这个属性是不是引用类型,判断是不是数组类型
@@ -328,11 +333,50 @@
             //对象或者值类型
             defineReactive.call(vm, o, key, value, true);
           }
-
-          //只需要在这里添加代理即可(问题:在这里写的代码是会递归的,如果在这里将属性映射到Vue实例上,那么就表示Vue实例就可以使用属性 )
+          //在这里添加代理即可(问题:在这里写的代码是会递归的)
+          //如果在这里将属性映射到Vue实例上,那么就表示Vue实例可以使用属性 key
+          //{data:{name:"xx",child:{name:"yy"}}}     //后面的name会将前面的name覆盖掉,因为递归
         }
       }
       /**响应式化的部分 end**/
+
+      JGVue.prototype.initData = function () {
+        //便利this._data的成员,将属性转换为响应式的,将直接属性代理到实力上
+        let keys = Object.keys(this._data);
+
+        //响应式化
+        for (let i = 0; i < keys.length; i++) {
+          //这里将对象this._data[keys[i]]编程响应式的
+          reactify(this._data, this);
+        }
+        //代理
+        for (let j = 0; j < keys.length; j++) {
+          //将this._data[keys[j]] 映射到this[keys[i]]上
+          //就是要让我们的this提供keys[i]这个属性
+          //在访问这个属性的时候,相当于在访问this._data的这个属性
+          proxy(this, "_data", keys[j]);
+        }
+      };
+
+      /**
+       * @description: 将某一个对象属性的访问映射到这个对象的某一个属性成员上  拿出来一层
+       * @param {*} target 对象
+       * @param {*} prop 被映射
+       * @param {*} key
+       * @return {*}
+       */
+      function proxy(target, prop, key) {
+        Object.defineProperty(target, key, {
+          enumerable: true,
+          configurable: true,
+          get() {
+            return target[prop][key];
+          },
+          set(newVal) {
+            target[prop][key] = newVal;
+          },
+        });
+      }
 
       let app = new JGVue({
         el: "#root",
@@ -352,4 +396,3 @@
     </script>
   </body>
 </html>
-  

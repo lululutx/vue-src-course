@@ -2,7 +2,7 @@
  * @Author: LuLu
  * @Date: 2022-04-29 21:09:44
  * @LastEditors: LuLu
- * @LastEditTime: 2022-04-29 21:12:07
+ * @LastEditTime: 2022-05-09 20:54:04
  * @Description: 
  * FindMe:https://github.com/lululutx
 -->
@@ -328,6 +328,9 @@
             //对象或者值类型
             defineReactive.call(vm, o, key, value, true);
           }
+          //在这里添加代理即可(问题:在这里写的代码是会递归的)
+          //如果在这里将属性映射到Vue实例上,那么就表示Vue实例可以使用属性 key
+          //{data:{name:"xx",child:{name:"yy"}}}     //后面的name会将前面的name覆盖掉,因为递归
         }
       }
       /**响应式化的部分 end**/
