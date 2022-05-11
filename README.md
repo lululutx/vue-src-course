@@ -2,7 +2,7 @@
  * @Author: LuLu
  * @Date: 2022-03-29 21:09:28
  * @LastEditors: LuLu
- * @LastEditTime: 2022-05-09 21:33:09
+ * @LastEditTime: 2022-05-11 21:29:24
  * @FilePath: \vue-src-course\README.md
  * @Description:
  * https://github.com/lululutx
@@ -208,7 +208,7 @@ let o ={
 - sort
 - splice
 
-要做什么事情呢? 
+要做什么事情呢?
 
 1. 在改变数组的数据的时候,要发出通知
 
@@ -255,6 +255,44 @@ vue 中引入了一个函数 proxy(target,src,prop),target 相当于 app,src 相
 将 target 的操作映射到 src.prop 上
 这里是因为当时没有`Proxy`语法(ES6)
 
-我们之前处理reactify方法已经不行了,我们需要新的方法来处理
-我们提供一个Observer的方法(观察者),在这个方法中对属性进行处理
-我们也可以将这个方法封装到initData当中
+我们之前处理 reactify 方法已经不行了,我们需要新的方法来处理
+我们提供一个 Observer 的方法(观察者),在这个方法中对属性进行处理
+我们也可以将这个方法封装到 initData 当中
+
+## 解释 proxy
+
+```js
+app._data.name
+//Vue设计,不希望访问 _ 开头的数据
+//Vue中有一个潜规则 _开头的数据是私有数据尽量不要访问 $开头的数据是只读数据
+
+//访问app的xxx 就是在访问app._data.xxx
+
+function proxy(app,key){
+  Object.defineProperty(app,key){
+    get(){
+      return app._data[key]
+    },
+    set(newVal){
+      app._data[key] = newVal
+    }
+  }
+}
+
+//问题 在Vue中不止有data属性 prop以及其他
+
+function proxy(app,prop,key){
+  Object.defineProperty(app[prop],key){
+    get(){
+      return app[prop]._data[key]
+    },
+    set(newVal){
+      app._data[prop][key] = newVal
+    }
+  }
+}
+//如果将data的成员映射到实例上
+proxy(实例,'_data',属性名)
+//如果将prop的成员映射到实例上
+proxy(实例,'_prop',属性名)
+```
