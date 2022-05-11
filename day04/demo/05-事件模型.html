@@ -1,0 +1,97 @@
+<!--
+ * @Author: LuLu
+ * @Date: 2022-05-11 21:56:31
+ * @LastEditors: LuLu
+ * @LastEditTime: 2022-05-11 22:37:24
+ * @Description: 
+ * FindMe:https://github.com/lululutx
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //需要有一个全局 event 变量 提供 on,off,emit 事件
+      //闭包
+      var event = (function () {
+        eventObjs = {};
+
+        return {
+          /**
+           * @description: 注册事件,可以连续注册,可以注册多个事件
+           * @param {*} type 事件名
+           * @param {*} handler 事件处理函数
+           * @return {*}
+           */
+          on: function (type, handler) {
+            (eventObjs[type] || (eventObjs[type] = [])).push(handler);
+          },
+          /**
+           * @description: 移除事件:如果没有参数,移除所以事件;
+           * 如果只带有事件名参数,则移除这个事件名下的所有事件;
+           * 如果带有两个参数 事件名 事件处理函数 就表示移除某一个事件的具体处理函数
+           * @param {*} type
+           * @param {*} handler
+           * @return {*}
+           */
+          off: function (type, handler) {
+            if (arguments.length === 0) {
+              //没有参数,移除所有事件
+              eventObjs = {};
+            } else if (arguments.length === 1) {
+              //只有事件类型,移除该事件的所有处理函数
+              eventObjs.type = [];
+            } else if (arguments.length === 2) {
+              // 移除type事件的handler函数
+              // 我们使用循环移除所有的 该函数对应的type 事件
+              let _events = eventObjs.type;
+              if (!_events) {
+                return;
+              }
+              //倒着循环,数组的序号不会受到影响
+              for (let i = _events.length - 1; i >= 0; i--) {
+                if (_events[i] === handler) {
+                  _events.splice(i, 1);
+                }
+              }
+            }
+          },
+          /**
+           * @description: 发射事件的,触发事件:包装参数传递给事件处理函数
+           * @param {*} type 事件类型
+           * @param {array} params 零或多个参数
+           * @return {*}
+           */
+          emit: function (type, ...params) {
+            let args = Array.prototype.splice.call(arguments, 1); //获取arguments从1后面所有的参数,是个数组 因为arguments不是数组类型,所以要显式调用数组原型方法
+            let _events = eventObjs.type;
+            if (!_events) {
+              return;
+            }
+            for (let i = 0; i < _events.length; i++) {
+              //如果要绑定上下文 就需要使用call 或者apply
+              _events[i].apply(null,args);//第一个参数是上下文
+            }
+          },
+        };
+      })();
+    </script>
+
+    <script>
+
+        //注册事件
+        event.on('click',()=>{console.log("第一个click事件")})
+
+        console.info("xxxxxxx")
+        console.info("xxxxxxx")
+        console.info("xxxxxxx")
+        console.info("xxxxxxx")
+        console.info("xxxxxxx")
+    </script>
+  </body>
+</html>
