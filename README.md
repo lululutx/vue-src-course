@@ -2,12 +2,14 @@
  * @Author: LuLu
  * @Date: 2022-03-29 21:09:28
  * @LastEditors: LuLu
- * @LastEditTime: 2022-05-11 21:56:04
+ * @LastEditTime: 2022-05-11 22:47:45
  * @FilePath: \vue-src-course\README.md
  * @Description:
  * https://github.com/lululutx
  * Copyright (c) 2022 by LuLu, All Rights Reserved.
 -->
+
+**根据b站视频BV1LE411e7HE的学习记录**
 
 数据驱动
 
