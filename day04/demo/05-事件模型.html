@@ -2,7 +2,7 @@
  * @Author: LuLu
  * @Date: 2022-05-11 21:56:31
  * @LastEditors: LuLu
- * @LastEditTime: 2022-05-11 22:37:24
+ * @LastEditTime: 2022-05-17 22:29:20
  * @Description: 
  * FindMe:https://github.com/lululutx
 -->
@@ -69,13 +69,13 @@
            */
           emit: function (type, ...params) {
             let args = Array.prototype.splice.call(arguments, 1); //获取arguments从1后面所有的参数,是个数组 因为arguments不是数组类型,所以要显式调用数组原型方法
-            let _events = eventObjs.type;
+            let _events = eventObjs[type];
             if (!_events) {
               return;
             }
             for (let i = 0; i < _events.length; i++) {
               //如果要绑定上下文 就需要使用call 或者apply
-              _events[i].apply(null,args);//第一个参数是上下文
+              _events[i].apply(null, args); //第一个参数是上下文
             }
           },
         };
@@ -83,15 +83,32 @@
     </script>
 
     <script>
+      //注册事件
+      event.on("click", () => {
+        console.log("第一个click事件");//匿名函数无法移除
+      });
+      event.on("click", () => {
+        console.log("第2个click事件");
+      });
+      event.on("click", () => {
+        console.log("第3个click事件");
+      });
+      event.on("click", () => {
+        console.log("第4个click事件");
+      });
 
-        //注册事件
-        event.on('click',()=>{console.log("第一个click事件")})
+      console.info("xxxxxxx");
+      console.info("xxxxxxx");
+      console.info("xxxxxxx");
+      console.info("xxxxxxx");
+      console.info("xxxxxxx");
 
-        console.info("xxxxxxx")
-        console.info("xxxxxxx")
-        console.info("xxxxxxx")
-        console.info("xxxxxxx")
-        console.info("xxxxxxx")
+      function f() {
+        event.emit("click");
+      }
+
+      //js中 基本类型是比较值 引用类型是比较地址
+      //引用类型和基本类型比较，是将其转换为基本类型再比较，如果是===严格等于是不转换比较
     </script>
   </body>
 </html>

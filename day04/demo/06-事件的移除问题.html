@@ -1,0 +1,43 @@
+<!--
+ * @Author: LuLu
+ * @Date: 2022-05-17 22:16:26
+ * @LastEditors: LuLu
+ * @LastEditTime: 2022-05-17 22:26:18
+ * @Description: 
+ * FindMe:https://github.com/lululutx
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="btn">click</button>
+
+    <script>
+      var btn = document.querySelector("#btn");
+
+      //   //注册
+      //   btn.addEventListener("click", function () {
+      //     console.log("点击了");
+      //   });
+
+      //   //移除
+      //   btn.removeEventListener("click", function () {
+      //     console.log("点击了");
+      //   });
+
+      //   //是不是移除了呢? 没有 js作为解释型语言 这是两个函数
+
+      //如果想移除
+      function handler() {
+        console.info("一个可移除的函数");
+      }
+      btn.addEventListener("click", handler);
+      //   btn.removeEventListener("click", handler);
+    </script>
+  </body>
+</html>
