@@ -2,7 +2,7 @@
  * @Author: LuLu
  * @Date: 2022-03-29 21:09:28
  * @LastEditors: LuLu
- * @LastEditTime: 2022-05-17 23:12:50
+ * @LastEditTime: 2022-05-18 23:13:39
  * @FilePath: \vue-src-course\README.md
  * @Description:
  * https://github.com/lululutx
@@ -365,3 +365,13 @@ Vue 模型 是怎么实现发布订阅的呢
   - 页面更新的时候,也就只需要更新一部分
 
 ![Watcher](./mdPic/Watcher.png)
+
+
+# 改写 observe函数
+
+缺陷:
+- 无法处理数组
+- 响应式无法在中间集成Watcher处理
+- 我们实现的rectify需要和实例紧紧的绑定在一起,分离(解耦)
+
+## 问题
