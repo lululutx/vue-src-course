@@ -2,7 +2,7 @@
  * @Author: LuLu
  * @Date: 2022-05-18 22:20:39
  * @LastEditors: LuLu
- * @LastEditTime: 2022-05-18 22:20:40
+ * @LastEditTime: 2022-06-08 22:32:47
  * @Description: 
  * FindMe:https://github.com/lululutx
 -->
@@ -27,6 +27,7 @@
         </ul>
       </div>
     </div>
+    <script src="./src/watcher.js"></script>
     <script src="./src/vnode.js"></script>
     <script src="./src/compiler.js"></script>
     <script src="./src/jgvue.js"></script>
@@ -44,6 +45,13 @@
             { name: "张小二", age: 6, gender: "女" },
             { name: "张小三", age: 3, gender: "男" },
           ],
+        },
+        computed: {
+          //计算属性也是响应式的(watcher)
+        },
+        watch: {
+          //监听什么属性,这个属性是支持语法路径的
+          //也是使用watcher实现
         },
       });
     </script>

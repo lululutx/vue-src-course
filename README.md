@@ -2,7 +2,7 @@
  * @Author: LuLu
  * @Date: 2022-03-29 21:09:28
  * @LastEditors: LuLu
- * @LastEditTime: 2022-05-18 23:13:39
+ * @LastEditTime: 2022-06-08 22:32:49
  * @FilePath: \vue-src-course\README.md
  * @Description:
  * https://github.com/lululutx
@@ -375,3 +375,30 @@ Vue 模型 是怎么实现发布订阅的呢
 - 我们实现的rectify需要和实例紧紧的绑定在一起,分离(解耦)
 
 ## 问题
+
+- observe 还没对单独的数组元素进行处理吧？
+
+# 引入Watcher
+
+问题:
+
+- 模型(图)
+- 关于this的问题
+
+
+实现:
+分成两步:
+1. 只考虑修改后刷新(响应式的核心算法)
+2. 再考虑依赖收集(优化)
+
+在Vue中,提供一个构造函数  Watcher
+Watcher 会有一些方法:
+
+- get() 用来进行**计算**或**执行**处理函数
+- update() 公共的外部方法,该方法会触发内部的run方法
+- run() 用来判断是内部是异步运行还是同步运行等,这个方法最终会调用内部的get方法
+- cleanupDep() 简单理解为清楚队列 
+
+我们的页面渲染是上面哪个方法执行的??? get
+
+我们的watcher实例有一个属性 vm,表示的就是当前的vue实例 
